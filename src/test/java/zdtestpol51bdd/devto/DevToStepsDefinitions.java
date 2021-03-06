@@ -7,17 +7,18 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 public class DevToStepsDefinitions {
+
     WebDriver driver;
+
     @Before
     public void setup(){
         System.setProperty("webdriver.chrome.driver","src/main/resources/chromedriver.exe");
+        driver =new ChromeDriver();
     }
-    @Given("Chrome browser is open")
-    public void chrome_browser_is_open() {
-        driver = new ChromeDriver();
-    }
-    @When("I go to devto main page")
+
+    @Given("I go to devto main page")
     public void i_go_to_devto_main_page() {
         driver.get("https://dev.to");
     }
