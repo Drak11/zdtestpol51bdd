@@ -53,7 +53,6 @@ public class DevToStepsDefinitions {
         WebElement podcast = driver.findElement(By.linkText("Podcasts"));
         podcast.click();
     }
-
     @When("I click on first podcast on the list")
     public void i_click_on_first_podcast_on_the_list() {
         wait.until(ExpectedConditions.titleContains("Podcasts"));
@@ -62,14 +61,41 @@ public class DevToStepsDefinitions {
         firstCastTitle = firstCastTitle.replace("podcast", "");
         firstCast.click();
     }
+    @When("I play the podcast")
+    public void i_play_the_podcast() {
+        wait.until(ExpectedConditions.titleContains(firstCastTitle));
+        WebElement recordButton = driver.findElement(By.id("record"));
+        recordButton.click();
+    }
+    @Then("Podcast Should be played")
+    public void podcast_should_be_played() {
+        WebElement initializing = driver.findElement(By.className("status-message"));
+        wait.until(ExpectedConditions.invisibilityOf(initializing));
+        WebElement pauseBtn = driver.findElement(By.xpath("//img[contains(@class,'pause-butt')]"));
+        Boolean isPauseBtnVisible = pauseBtn.isDisplayed();
+        Assert.assertTrue(isPauseBtnVisible);
+    }
 
-    @Then("I should be redirected to podcast page")
+
+/*    @When("I click on first podcast on the list")
+    public void i_click_on_first_podcast_on_the_list() {
+        wait.until(ExpectedConditions.titleContains("Podcasts"));
+        WebElement firstCast = driver.findElement(By.tagName("h3"));
+        firstCastTitle = firstCast.getText();
+        firstCastTitle = firstCastTitle.replace("podcast", "");
+        firstCast.click();
+    }*/
+
+/*    @Then("I should be redirected to podcast page")
     public void i_should_be_redirected_to_podcast_page() {
         wait.until(ExpectedConditions.titleContains(firstCastTitle));
         WebElement castTitle = driver.findElement(By.tagName("h1"));
         String castTitleText = castTitle.getText();
         Assert.assertEquals(firstCastTitle, castTitleText);
-    }
+    }*/
+
+
+
 
     @When("I search for {string} phrase")
     public void i_search_for_phrase(String phrase) {
@@ -80,8 +106,8 @@ public class DevToStepsDefinitions {
 
     }
 
-    @Then("Top {int} blogs found should have correct phrase in title")
-    public void top_blogs_found_should_have_correct_phrase_in_title(Integer int1) {
+    @Then("Top {int} blogs found should have correct phrase in title or snippet")
+    public void top_blogs_found_should_have_correct_phrase_in_title_or_snippet(Integer int1) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("h3.crayons-story__title"))); //h3
         wait.until(ExpectedConditions.attributeContains(By.id("substories"), "class", "search-results-loaded"));
         List<WebElement> allPosts = driver.findElements(By.className("crayons-story__body")); // div - caly wpis
