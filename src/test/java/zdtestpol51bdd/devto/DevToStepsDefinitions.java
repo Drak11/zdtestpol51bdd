@@ -3,7 +3,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.After;
+import io.cucumber.java.After;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -47,8 +47,11 @@ public class DevToStepsDefinitions {
     public void i_click_on_first_blog_displayed() {
 //        WebElement firstBlog = driver.findElement(By.cssSelector("h2.crayons-story__title > a"));
 //        firstBlogTitle = firstBlog.getText();
+//        firstBlogTitle = mainPage.firstBlog.getText();
+//        mainPage.selectFirstBlog();
         firstBlogTitle = mainPage.firstBlog.getText();
-        mainPage.selectFirstBlog();
+        singleBlogPage = mainPage.selectFirstBlog();
+
     }
 
     @Then("I should be redirected to blog page")
@@ -157,7 +160,6 @@ public class DevToStepsDefinitions {
 
     @After
     public void tearDown() {
-        driver.close();
         driver.quit();
     }
 
