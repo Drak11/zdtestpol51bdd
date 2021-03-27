@@ -10,12 +10,11 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import zdtestpol51bdd.devto.pages.MainPage;
+import zdtestpol51bdd.devto.pages.SecondPodcastPage;
 import zdtestpol51bdd.devto.pages.SingleBlogPage;
-
 import java.util.List;
 
 public class DevToStepsDefinitions {
@@ -24,8 +23,12 @@ public class DevToStepsDefinitions {
     String firstBlogTitle;
     String firstCastTitle;
     String searchingPhrase;
+    String Podcast;
     MainPage mainPage;
     SingleBlogPage singleBlogPage;
+    SecondPodcastPage secondPodcastPage;
+
+
 
     @Before
     public void setup() {
@@ -60,29 +63,42 @@ public class DevToStepsDefinitions {
 
     @When("I go to podcast section")
     public void i_go_to_podcast_section() {
-        WebElement podcast = driver.findElement(By.linkText("Podcasts"));
-        podcast.click();
+
+//        WebElement podcast = driver.findElement(By.linkText("Podcasts"));
+//        podcast.click();
+        Podcast = mainPage.podcast.getText();
+        mainPage.selectPodcast();
     }
     @When("I click on first podcast on the list")
     public void i_click_on_first_podcast_on_the_list() {
         wait.until(ExpectedConditions.titleContains("Podcasts"));
-        WebElement firstCast = driver.findElement(By.tagName("h3"));
-        firstCastTitle = firstCast.getText();
+//        WebElement firstCast = driver.findElement(By.tagName("h3"));
+        secondPodcastPage = new SecondPodcastPage(driver);
+        firstCastTitle = secondPodcastPage.firstCast.getText();
         firstCastTitle = firstCastTitle.replace("podcast", "");
-        firstCast.click();
+        secondPodcastPage.selectfirstCast();
+
+//        firstCastTitle = firstCast.getText();
+//        firstCastTitle = firstCastTitle.replace("podcast", "");
+//        firstCast.click();
     }
     @When("I play the podcast")
     public void i_play_the_podcast() {
-        wait.until(ExpectedConditions.titleContains(firstCastTitle));
-        WebElement recordButton = driver.findElement(By.id("record"));
-        recordButton.click();
+//        wait.until(ExpectedConditions.titleContains(firstCastTitle));
+        secondPodcastPage  = new SecondPodcastPage(driver);
+        wait.until(ExpectedConditions.invisibilityOf(secondPodcastPage.initializing));
+//        WebElement recordButton = driver.findElement(By.id("record"));
+        secondPodcastPage.selectrecordButton();
+//        recordButton.click();
     }
     @Then("Podcast Should be played")
     public void podcast_should_be_played() {
-        WebElement initializing = driver.findElement(By.className("status-message"));
-        wait.until(ExpectedConditions.invisibilityOf(initializing));
-        WebElement pauseBtn = driver.findElement(By.xpath("//img[contains(@class,'pause-butt')]"));
-        Boolean isPauseBtnVisible = pauseBtn.isDisplayed();
+//       WebElement initializing = driver.findElement(By.className("status-message"));
+        secondPodcastPage = new SecondPodcastPage(driver);
+        wait.until(ExpectedConditions.invisibilityOf(secondPodcastPage.initializing));
+//        WebElement pauseBtn = driver.findElement(By.xpath("//img[contains(@class,'pause-butt')]"));
+//        Boolean isPauseBtnVisible = pauseBtn.isDisplayed();
+        Boolean isPauseBtnVisible = secondPodcastPage.pauseBtn.isDisplayed();
         Assert.assertTrue(isPauseBtnVisible);
     }
 
@@ -138,8 +154,10 @@ public class DevToStepsDefinitions {
             }
         }
     }
+
     @After
-    public void tearDown(){
+    public void tearDown() {
+        driver.close();
         driver.quit();
     }
 
