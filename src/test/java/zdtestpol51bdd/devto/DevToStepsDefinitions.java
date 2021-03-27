@@ -3,6 +3,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.After;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -128,4 +129,9 @@ public class DevToStepsDefinitions {
             }
         }
     }
+    @After
+    public void tearDown() {
+        driver.quit();
+    }
+
 }
